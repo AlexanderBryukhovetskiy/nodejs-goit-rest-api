@@ -20,39 +20,28 @@ router.get('/', async (req, res, next) => {
   }
   catch(error){
     next(error)
-    // res.status(500).json({
-    //   message: "Server Error"
-    // })
   }
 });
 
 router.get('/:contactId', async (req, res, next) => {
   try{
     const contactId = req.params.contactId;
-    const result = await contacts.getContactById(contactId);
+    const result = await contacts.getById(contactId);
     if(!result){
       throw HttpError(404, "Not found");
-      // const error = new Error("Not found");
-      // error.status = 404;
-      // throw error;
     }
     res.json(result);
   }
   catch(error){
     next(error)
-    // const { status = 500, message = "Server Error"} = error;
-    // res.status(status).json({
-    //   message,
-    // })
   }
 });
 
 router.post('/', async (req, res, next) => {
   try{
     const {error} = addSchema.validate(req.body);
-    console.log(error);
     if (error){
-      throw HttpError(400, error.message);
+      throw HttpError(400, "missing required name field");
     }
     const result = await contacts.addContact(req.body);
     res.status(201).json(result);
@@ -62,28 +51,11 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.delete('/:contactId', async (req, res, next) => {
-  try{
-    const {contactId} = req.params;
-    console.log("req.contactId :", contactId);
-
-    const result = await contacts.removeContact(contactId);
-    console.log(" contacts.removeContact(contactId) : ", result);
-
-    if (!result) {
-      throw new HttpError(400, error.message);
-    }
-    res.status({
-      "message": "contact deleted"
-    });
-  }
-  catch(error){
-    next(error)
-  }
-});
-
 router.put('/:contactId', async (req, res, next) => {
   try{
+    if(Object.keys(req.body).length === 0){
+      throw HttpError(400, "missing fields");
+    }
     const {error} = addSchema.validate(req.body);
     if (error){
       throw HttpError(400, error.message);
@@ -94,6 +66,22 @@ router.put('/:contactId', async (req, res, next) => {
       throw HttpError(404, "Not found");
     }
     res.status(200).json(result);
+  }
+  catch(error){
+    next(error)
+  }
+});
+
+router.delete('/:contactId', async (req, res, next) => {
+  try{
+    const {contactId} = req.params;
+    const result = await contacts.removeContact(contactId);
+    if (!result) {
+      throw HttpError(404, "Not found");
+    }
+    res.json({
+      "message": "contact deleted"
+    });
   }
   catch(error){
     next(error)
