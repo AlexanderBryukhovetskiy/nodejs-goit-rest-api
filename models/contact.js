@@ -5,7 +5,6 @@ const Joi = require('joi');
 const {handleMongooseError} = require('../helpers');
 
 //регулярний вираз для номера телефона:
-
 const phoneRegExp = /^\'('\d{3}'\')[\b]\d{3}-\d{2}-\d{2}$/ ;
 
 const contactSchema = new Schema({
@@ -44,8 +43,7 @@ const updateSchema = Joi.object({
   favorite: Joi.boolean(),
 });
 
-
-
+//  add another schemas !!!!!!!1
 const schemas = {
   addSchema,
   updateSchema,
