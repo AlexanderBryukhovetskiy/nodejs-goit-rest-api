@@ -19,7 +19,7 @@ const contactSchema = new Schema({
   },
   phone: {
       type: String,
-      // match: /^\$/,
+      match: phoneRegExp,
       required: true,
   },
   favorite: {
