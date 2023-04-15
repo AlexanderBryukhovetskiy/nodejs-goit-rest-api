@@ -27,6 +27,7 @@ const contactSchema = new Schema({
   }
 }, { versionKey: false, timestamps: true});
 
+//обробка помилки валідації при запиті
 contactSchema.post('save', handleMongooseError);
 
 const addSchema = Joi.object({
