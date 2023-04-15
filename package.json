@@ -8,6 +8,10 @@
     "lint": "eslint **/*.js",
     "lint:fix": "eslint --fix **/*.js"
   },
+  "engines": {
+    "npm": "^6.0.0",
+    "node": "^4.20.1"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "cross-env": "7.0.3",
