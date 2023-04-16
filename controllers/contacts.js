@@ -8,14 +8,14 @@ const getAll = async (req, res) => {
     res.json(result);
 };
 
-// const getById =  async (req, res) => {
-//     const contactId = req.params.contactId;
-//     const result = await contacts.getById(contactId);
-//     if(!result){
-//       throw HttpError(404, "Not found");
-//     }
-//     res.json(result);
-// };
+const getById =  async (req, res) => {
+    const {contactId} = req.params;
+    const result = await Contact.find(contactId);
+    if(!result){
+      throw HttpError(404, "Not found");
+    }
+    res.json(result);
+};
 
 const add =  async (req, res) => {
     const result = await Contact.create(req.body);
