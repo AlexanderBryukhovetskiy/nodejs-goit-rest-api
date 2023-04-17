@@ -10,16 +10,14 @@ const {handleMongooseError} = require('../helpers');
 const contactSchema = new Schema({
   name:{
       type: String,
-      required: true,
+      required: [true, 'Set name for contact'],
   },
   email: {
       type: String,
-      required: true,
   },
   phone: {
       type: String,
       // match: phoneRegExp,
-      required: true,
   },
   favorite: {
       type: Boolean,
@@ -31,16 +29,18 @@ const contactSchema = new Schema({
 contactSchema.post('save', handleMongooseError);
 
 const addSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  phone: Joi.string().pattern(phoneRegExp).required(),
-  favorite: Joi.boolean().required(),
+  name: Joi.string(),
+  email: Joi.string(),
+  // phone: Joi.string().pattern(phoneRegExp).required(),
+  phone: Joi.string(),
+  favorite: Joi.boolean(),
 });
 
 const updateSchema = Joi.object({
   name: Joi.string(),
   email: Joi.string(),
-  phone: Joi.string().pattern(phoneRegExp),
+  // phone: Joi.string().pattern(phoneRegExp),
+  phone: Joi.string(),
   favorite: Joi.boolean(),
 });
 
