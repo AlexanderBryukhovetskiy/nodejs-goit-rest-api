@@ -4,20 +4,20 @@ const Joi = require('joi');
 
 const {handleMongooseError} = require('../helpers');
 
-//регулярний вираз для номера телефона:
-// const phoneRegExp = /^\(\d{3}\)[\b]\d{3}-\d{2}-\d{2}$/ ;
+//регулярний вираз для номера телефона у форматі: (123)-123-1234:
+const phoneRegExp = /^\(\d{3}\)-\d{3}-\d{4}$/ ;
 
 const contactSchema = new Schema({
   name:{
       type: String,
-      required: [true, 'Set name for contact'],
+      required: true,
   },
   email: {
       type: String,
   },
   phone: {
       type: String,
-      // match: phoneRegExp,
+      match: phoneRegExp,
   },
   favorite: {
       type: Boolean,
@@ -29,23 +29,23 @@ const contactSchema = new Schema({
 contactSchema.post('save', handleMongooseError);
 
 const addSchema = Joi.object({
-  name: Joi.string(),
+  name: Joi.string().required(),
   email: Joi.string(),
-  // phone: Joi.string().pattern(phoneRegExp).required(),
-  phone: Joi.string(),
+  phone: Joi.string().pattern(phoneRegExp).required(),
+  // phone: Joi.string(),
   favorite: Joi.boolean(),
 });
 
 const updateSchema = Joi.object({
   name: Joi.string(),
   email: Joi.string(),
-  // phone: Joi.string().pattern(phoneRegExp),
-  phone: Joi.string(),
+  phone: Joi.string().pattern(phoneRegExp),
+  // phone: Joi.string(),
   favorite: Joi.boolean(),
 });
 
 const updateFavoriteSchema = Joi.object({
-  favorite: Joi.boolean().required,
+  favorite: Joi.boolean().required(),
 });
 
 const schemas = {
