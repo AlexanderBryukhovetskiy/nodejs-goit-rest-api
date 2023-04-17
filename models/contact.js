@@ -32,7 +32,6 @@ const addSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string(),
   phone: Joi.string().pattern(phoneRegExp).required(),
-  // phone: Joi.string(),
   favorite: Joi.boolean(),
 });
 
@@ -40,18 +39,17 @@ const updateSchema = Joi.object({
   name: Joi.string(),
   email: Joi.string(),
   phone: Joi.string().pattern(phoneRegExp),
-  // phone: Joi.string(),
   favorite: Joi.boolean(),
 });
 
-const updateFavoriteSchema = Joi.object({
-  favorite: Joi.boolean().required(),
+const updateStatusSchema = Joi.object({
+  favorite: Joi.boolean(),
 });
 
 const schemas = {
   addSchema,
   updateSchema,
-  updateFavoriteSchema,
+  updateStatusSchema,
 }
 
 const Contact = model('contact', contactSchema);
