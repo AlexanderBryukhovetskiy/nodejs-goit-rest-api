@@ -24,9 +24,11 @@ const register = async(req, res) => {
   const newUser = await User.create({...req.body, password: hashPassword});
 
   res.status(201).json({
+  user: {
     email: newUser.email,
     name: newUser.name,
-  })
+  }
+})
 } 
 
 const login = async(req, res) =>{
@@ -36,13 +38,13 @@ const login = async(req, res) =>{
 
   //check if user is in database
   if(!user){
-    throw HttpError(401, "email or password invalid")
+    throw HttpError(401, "Email or password is wrong")
   }
   //check password
   const passwordCompare = await bcrypt.compare(password, user.password);
 
   if(!passwordCompare){
-    throw HttpError(401, "email or password invalid")
+    throw HttpError(401, "Email or password is wrong")
   }
 
   const payload = {
@@ -53,9 +55,12 @@ const login = async(req, res) =>{
 
   res.json({
     token,
+    user: {
+      email,
+      subscription,
+    }
   })
 }
-
 
 module.exports = {
   register: ctrlWrapper(register),
