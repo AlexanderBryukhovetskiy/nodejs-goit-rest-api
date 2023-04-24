@@ -42,9 +42,20 @@ const loginSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const updateSubscriptionSchema = Joi.object({
+  subscription: Joi.string()
+    .valid("starter", "pro", "business")
+    .required()
+    .messages({
+      "any.only":
+        "The subscription must have one of the following values: 'starter', 'pro' or 'business'",
+    }),
+});
+
 const schemas = {
   registerSchema,
   loginSchema,
+  updateSubscriptionSchema,
 };
 
 const User = model('user', userSchema);
@@ -52,4 +63,5 @@ const User = model('user', userSchema);
 module.exports = {
   User,
   schemas,
+  
 }

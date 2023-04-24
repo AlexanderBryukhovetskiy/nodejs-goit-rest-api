@@ -6,10 +6,10 @@ const getAll = async (req, res) => {
   //user-owner of collection:
   const {_id: owner} = req.user;
   //get parameters of request:
-  const {page = 1, limit = 10} = req.query; 
+  const {page = 1, limit = 20, favorite} = req.query; 
   const skip = (page-1) * limit;
   const result = await Contact.find(
-    {owner}, "-createdAt -updatedAt", {skip, limit})
+    {owner, favorite: true}, "-createdAt -updatedAt", {skip, limit})
     .populate("owner", "email subscription");
   res.json(result);
 };

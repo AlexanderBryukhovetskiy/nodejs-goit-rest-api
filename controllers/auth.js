@@ -12,7 +12,7 @@ const { HttpError, ctrlWrapper } = require("../helpers");
 const register = async(req, res) => {
   //check is email unique
   const {email, password} = req.body;
-  
+
   const user = await User.findOne({email});
 
   if (user) {
@@ -80,9 +80,21 @@ const logout = async(req, res) => {
 
   await User.findByIdAndUpdate(_id, {token: ""});
 
-  res.json({
+  res.status(204).json({
     message: "Logout success"
   })
+};
+
+const updateSubscription = async (req, res) => {
+  const { _id } = req.user;
+  const result = await User.findByIdAndUpdate(_id, req.body, { new: true });
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json({
+    email: result.email,
+    subscription: result.subscription,
+  });
 };
 
 module.exports = {
@@ -90,4 +102,5 @@ module.exports = {
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
+  updateSubscription: ctrlWrapper(updateSubscription),
 }
