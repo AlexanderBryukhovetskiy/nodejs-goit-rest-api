@@ -12,6 +12,7 @@ const { HttpError, ctrlWrapper } = require("../helpers");
 const register = async(req, res) => {
   //check is email unique
   const {email, password} = req.body;
+  
   const user = await User.findOne({email});
 
   if (user) {
@@ -34,12 +35,13 @@ const register = async(req, res) => {
 const login = async(req, res) => {
   const {email, password} = req.body;
 
+  //check if user is in database
   const user = await User.findOne({email});
 
-  //check if user is in database
   if(!user){
     throw HttpError(401, "Email or password is wrong")
   }
+
   //check password
   const passwordCompare = await bcrypt.compare(password, user.password);
 
@@ -52,6 +54,8 @@ const login = async(req, res) => {
   }
 
   const token = jwt.sign(payload, SECRET_KEY, {expiresIn: "23h"});
+
+  await User.findByIdAndUpdate(user._id, {token});
 
   res.json({
     token,
@@ -71,8 +75,19 @@ const getCurrent = async(req, res) => {
   })
 };
 
+const logout = async(req, res) => {
+  const {_id} = req.user;
+
+  await User.findByIdAndUpdate(_id, {token: ""});
+
+  res.json({
+    message: "Logout success"
+  })
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
+  logout: ctrlWrapper(logout),
 }
