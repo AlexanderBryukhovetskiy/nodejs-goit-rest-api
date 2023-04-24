@@ -43,9 +43,7 @@ const loginSchema = Joi.object({
 });
 
 const updateSubscriptionSchema = Joi.object({
-  subscription: Joi.string()
-    .valid("starter", "pro", "business")
-    .required()
+  subscription: Joi.string().valid("starter", "pro", "business").required()
     .messages({
       "any.only":
         "The subscription must have one of the following values: 'starter', 'pro' or 'business'",
