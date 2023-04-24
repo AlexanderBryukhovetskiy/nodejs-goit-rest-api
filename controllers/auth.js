@@ -10,7 +10,7 @@ const { User } = require("../models/user");
 const { HttpError, ctrlWrapper } = require("../helpers");
 
 const register = async(req, res) => {
-  //check ia email unique
+  //check is email unique
   const {email, password} = req.body;
   const user = await User.findOne({email});
 
@@ -24,14 +24,14 @@ const register = async(req, res) => {
   const newUser = await User.create({...req.body, password: hashPassword});
 
   res.status(201).json({
-  user: {
-    email: newUser.email,
-    name: newUser.name,
-  }
-})
-} 
+    user: {
+      email: newUser.email,
+      subscription: newUser.subscription,
+    }
+  })
+};
 
-const login = async(req, res) =>{
+const login = async(req, res) => {
   const {email, password} = req.body;
 
   const user = await User.findOne({email});
@@ -56,13 +56,23 @@ const login = async(req, res) =>{
   res.json({
     token,
     user: {
-      email,
-      subscription,
+      email: user.email,
+      subscription: user.subscription,
     }
   })
-}
+};
+
+const getCurrent = async(req, res) => {
+  const { email, subscription } = req.user;
+
+  res.json({
+    email, 
+    subscription,
+  })
+};
 
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
+  getCurrent: ctrlWrapper(getCurrent),
 }

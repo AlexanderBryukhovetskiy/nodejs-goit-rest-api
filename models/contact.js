@@ -26,8 +26,9 @@ const contactSchema = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'user',
+    required: true,
   }
-}, { versionKey: false, timestamps: true});
+}, { versionKey: false, timestamps: true });
 
 //обробка помилки валідації при запиті
 contactSchema.post('save', handleMongooseError);
