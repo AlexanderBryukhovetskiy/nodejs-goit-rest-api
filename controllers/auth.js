@@ -37,14 +37,11 @@ const login = async(req, res) => {
 
   //check if user is in database
   const user = await User.findOne({email});
-
   if(!user){
     throw HttpError(401, "Email or password is wrong")
   }
-
   //check password
   const passwordCompare = await bcrypt.compare(password, user.password);
-
   if(!passwordCompare){
     throw HttpError(401, "Email or password is wrong")
   }
@@ -80,9 +77,7 @@ const logout = async(req, res) => {
 
   await User.findByIdAndUpdate(_id, {token: ""});
 
-  res.status(204).json({
-    message: "Logout success"
-  })
+  res.status(204).json({"message": "Logout success"});
 };
 
 const updateSubscription = async (req, res) => {

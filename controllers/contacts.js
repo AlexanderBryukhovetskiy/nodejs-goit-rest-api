@@ -8,8 +8,16 @@ const getAll = async (req, res) => {
   //get parameters of request:
   const {page = 1, limit = 20, favorite} = req.query; 
   const skip = (page-1) * limit;
-  const result = await Contact.find(
-    {owner, favorite: true}, "-createdAt -updatedAt", {skip, limit})
+  //api/contacts?favorite=true 
+  const query = { owner };
+  if (favorite !== undefined) {
+    query.favorite = favorite === "true";
+  }
+
+  const result = await Contact.find(query, "-createdAt -updatedAt", {
+    skip, 
+    limit
+  })
     .populate("owner", "email subscription");
   res.json(result);
 };
