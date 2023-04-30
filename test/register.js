@@ -7,7 +7,7 @@ const { User} = require('../models/user');
 
 mongoose.set("strictQuery", false);
 
-const { DB_TEST_URI } = process.env;
+const { DB_TEST_URI, PORT } = process.env;
 
 describe("register", () => {
   beforeAll(async () => {
