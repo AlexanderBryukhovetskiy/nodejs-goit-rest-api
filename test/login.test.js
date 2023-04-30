@@ -12,6 +12,7 @@ const {DB_HOST, PORT = 3000} = process.env;
 describe('login', () => {
   beforeAll( async() => {
     await mongoose.connect(DB_HOST);
+    app.listen(PORT);
   });
 
   afterAll( async() => {
@@ -24,23 +25,14 @@ describe('login', () => {
       password: '123456',
     });
 
-    expected(response.statusCode).toBe(200);
-    expected(response.body.data.user).toEqual({
+    expect(response.statusCode).toBe(200);
+    expect(response.body.data.user).toEqual({
       email: "anna@mail.com",
       subscription: "starter"
     });
-    expected(response.body.data.user.email).toBe(String);
-    expected(response.body.data.user.subscription).toBe(String);
-    expected(response.body.data.token).not.toBeFalsy();
+    expect(response.body.data.user.email).toBe(String);
+    expect(response.body.data.user.subscription).toBe(String);
+    expect(response.body.data.token).not.toBeFalsy();
   });
 });
 
-mongoose.connect(DB_HOST)
-.then(()=> {
-  app.listen(PORT);
-  console.log("Database connect success")
-})
-.catch(error => {
-  console.log(error.message);
-  process.exit(1);
-});
