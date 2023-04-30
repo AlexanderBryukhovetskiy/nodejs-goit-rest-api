@@ -12,7 +12,10 @@ const multerConfig = multer.diskStorage({
   //OPTIONAL: function for renaming files (00:26:00)
   filename: (req, file, cb) => {
     cb( null, file.originalname);
-  }
+  },
+  limits: {
+    fileSize: 2097152,
+  },
 })
 
 const upload = multer({

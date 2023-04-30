@@ -8,6 +8,8 @@ const fs = require('fs/promises');
 
 const gravatar = require('gravatar');
 
+const jimp = require('jimp');
+
 require('dotenv').config();
 
 
@@ -15,7 +17,7 @@ const {SECRET_KEY} = process.env;
 
 const { User } = require('../models/user');
 
-const { HttpError, ctrlWrapper } = require('../helpers');
+const { HttpError, ctrlWrapper, resizeAvatar } = require('../helpers');
 
 const avatarsDir = path.join(__dirname, '../', 'public', 'avatars')
 
@@ -112,6 +114,8 @@ const updateAvatar = async(req, res) => {
   const {_id} = req.user;
 
   const {path: tempUpload, originalname} = req.file;
+
+  await resizeAvatar({ img: tempUpload, size:{ width: 250, height: 250 } });
 
   const filename = `${_id}_${originalname}`;
 
