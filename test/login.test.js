@@ -26,13 +26,15 @@ describe('login', () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.data.user).toEqual({
-      email: "anna@mail.com",
-      subscription: "starter"
-    });
-    expect(response.body.data.user.email).toBe(String);
-    expect(response.body.data.user.subscription).toBe(String);
-    expect(response.body.data.token).not.toBeFalsy();
+    expect(response.body.user).toEqual(
+        {
+        email: "anna@mail.com",
+        subscription: "starter"
+      }
+    );
+    expect(response.body.user.email).toBe(String);
+    expect(response.body.user.subscription).toBe(String);
+    expect(response.body.token).not.toBeFalsy();
   });
 });
 
