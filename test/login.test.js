@@ -20,21 +20,14 @@ describe('login', () => {
   });
 
   it('should login user', async () => {
-    const response = await supertest(app).post('/api/auth/login').send({
-      email: "anna@mail.com",
-      password: '123456',
-    });
-
-    expect(response.statusCode).toBe(200);
-    expect(response.body.user).toEqual(
-        {
+      const response = await supertest(app).post('/api/auth/login').send({
         email: "anna@mail.com",
-        subscription: "starter"
-      }
-    );
-    expect(response.body.user.email).toBe(String);
-    expect(response.body.user.subscription).toBe(String);
-    expect(response.body.token).not.toBeFalsy();
+        password: '123456',
+      });
+      expect(response.statusCode).toBe(200);
+      expect(response.body.user.email).toEqual("anna@mail.com");
+      expect(response.body.user.subscription).toEqual("starter");
+      expect(response.body.token).not.toBeFalsy();
   });
 });
 
