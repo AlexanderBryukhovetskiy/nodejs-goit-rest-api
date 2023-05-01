@@ -17,7 +17,6 @@ describe('login', () => {
 
   afterAll( async() => {
     await mongoose.disconnect(DB_HOST);
-    
   });
 
   it('should return a response with code status 200', async () => {
