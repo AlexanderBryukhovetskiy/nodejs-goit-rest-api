@@ -27,7 +27,7 @@ describe("register", () => {
     });
 
     expect(response.statusCode).toBe(201);
-    expect(response.body.data.user.email).toBe("testUser1@gmail.com");
+    expect(response.body.user.email).toBe("testUser1@gmail.com");
   });
 
   it("should not register the same user 2 times", async () => {

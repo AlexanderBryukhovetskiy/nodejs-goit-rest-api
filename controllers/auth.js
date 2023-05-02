@@ -47,7 +47,9 @@ const register = async(req, res) => {
       email: newUser.email,
       subscription: newUser.subscription,
     }
-  })
+  });
+
+  console.log(res);
 };
 
 const login = async(req, res) => {
