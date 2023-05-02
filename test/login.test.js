@@ -9,14 +9,17 @@ mongoose.set("strictQuery", false);
 
 const {DB_HOST, PORT = 3000} = process.env;
 
+let server;
+
 describe('login', () => {
   beforeAll( async() => {
     await mongoose.connect(DB_HOST);
-    app.listen(PORT);
+    server = app.listen(PORT);
   });
 
   afterAll( async() => {
     await mongoose.disconnect(DB_HOST);
+    server.close();
   });
 
   it('should return a response with code status 200', async () => {
