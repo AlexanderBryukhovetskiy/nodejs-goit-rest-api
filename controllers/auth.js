@@ -12,19 +12,20 @@ const jimp = require('jimp');
 
 require('dotenv').config();
 
+const {nanoid} = require('nanoid');
 
-const {SECRET_KEY} = process.env; 
+
+const {SECRET_KEY, BASE_URL} = process.env; 
 
 const { User } = require('../models/user');
 
-const { HttpError, ctrlWrapper, resizeAvatar } = require('../helpers');
+const { HttpError, ctrlWrapper, resizeAvatar, sendEmail } = require('../helpers');
 
 const avatarsDir = path.join(__dirname, '../', 'public', 'avatars')
 
 const register = async(req, res) => {
   //check is email unique
   const {email, password} = req.body;
-
   const user = await User.findOne({email});
 
   if (user) {
@@ -33,14 +34,23 @@ const register = async(req, res) => {
   //------------
 
   const hashPassword = await bcrypt.hash(password, 10);
-
   const avatarURL = gravatar.url(email);
+  const verificationCode = nanoid(16);
 
   const newUser = await User.create({
     ...req.body, 
     password: hashPassword, 
-    avatarURL
+    avatarURL,
+    verificationCode
   });
+
+  const verifyEmail = {
+    to: email,
+    subject: 'Verify email',
+    html: `<a target='_blank' href='${BASE_URL}/api/auth/verify/${verificationCode}'>Click to verify email</a>`
+  };
+
+  await sendEmail(verifyEmail);
 
   res.status(201).json({
     user: {

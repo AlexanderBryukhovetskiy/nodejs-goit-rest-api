@@ -15,19 +15,10 @@ const nodemailerConfig = {
 
 const transport = nodemailer.createTransport(nodemailerConfig);
 
-// const email = {
-//   to: 'gerowad857@syinxun.com',
-//   from: 'a.v.bryukhovetskiy@meta.ua',
-//   subject: 'Test email',
-//   html: '<p><strong>Test email</strong> from localhost:3000</p>'
-// };
-
 const sendEmail = async (data) => {
   const email = {...data, from: 'a.v.bryukhovetskiy@meta.ua'};
   await transport.sendMail(email);
   return true;
-  // .then(() => console.log('Email sent success'))
-  // .catch(error => console.log(error.message));
 };
 
 module.exports = {
