@@ -1,24 +1,23 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-const {EMAIL_PASSWORD} = process.env;
+const { EMAIL_USER, EMAIL_PASSWORD } = process.env;
 
-const nodemailerConfig = {
-  host: 'smtp.meta.ua',
-  port: 465, //25, 465, 2525
-  secure: true,
-  auth: {
-    user: 'a.v.bryukhovetskiy@meta.ua',
-    pass: EMAIL_PASSWORD
-  }
-};
+const sendEmail = (data) => {
+  const nodemailerConfig = {
+    host: 'sandbox.smtp.mailtrap.io',
+    port: 2525,
+    auth: {
+      user: EMAIL_USER,
+      pass: EMAIL_PASSWORD
+    }
+  };
 
-const transport = nodemailer.createTransport(nodemailerConfig);
+  const transport = nodemailer.createTransport(nodemailerConfig);
 
-const sendEmail = async(data) => {
-  const email = {...data, from: 'a.v.bryukhovetskiy@meta.ua'};
-  await transport.sendMail(email);
-  return true;
+  const email = {...data, from: 'a.v.bryukhovetskiy@gmail.com'};
+
+  return transport.sendMail(email);
 };
 
 module.exports = sendEmail;

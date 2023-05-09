@@ -46,7 +46,7 @@ const register = async(req, res) => {
   const verifyEmail = {
     to: email,
     subject: 'Verify email',
-    html: `<a target='_blank' href='${BASE_URL}/api/auth/verify/${verificationToken}'>Click to verify email</a>`
+    html: `<a target='_blank' href='${BASE_URL}/users/verify/${verificationToken}'>Click to verify email</a>`
   };
 
   await sendEmail(verifyEmail);
@@ -67,11 +67,17 @@ const verifyEmail = async(req, res) => {
   if(!user){
     throw HttpError(404, 'Not found');
   }
+  console.log('user._id in verifyEmail:', user._id);
 
   await User.findByIdAndUpdate(user._id, {
     verify: true, 
     verificationToken: null,
   });
+
+  // //check updated (verified) user
+  // await User.findOne({verificationToken});
+  // console.log('user after verifyEmail:', user);
+
 
   res.json({
     message: 'Verification successful',
@@ -83,7 +89,7 @@ const resendVerifyEmail = async (req, res) => {
   if(!email){
     throw HttpError(400, 'missing required field email');
   }
-  const user = User.findOne({email});
+  const user = await User.findOne({email});
   if(!user){
     throw HttpError(404, 'Not found');
   }
