@@ -80,12 +80,16 @@ const verifyEmail = async(req, res) => {
   })
 };
 
+
+//////  --------------------------------------------
 const resendVerifyEmail = async (req, res) => {
 
   console.log("it is router.get('/users/verify, ctrl.resendVerifyEmail)");
 
   const {email} = req.body;
-  
+
+  console.log('req.body.email:', email);
+
   if(!email){
     throw HttpError(400, 'missing required field email');
   }
@@ -109,6 +113,8 @@ const resendVerifyEmail = async (req, res) => {
     message: 'Verification email sent'
   });
 }
+/////----------------------------------
+
 
 const login = async(req, res) => {
   const {email, password} = req.body;
