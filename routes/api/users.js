@@ -8,8 +8,8 @@ const {validateBody} = require('../../middlewares');
 
 const router = express.Router();
 
-router.get('/:verificationToken', ctrl.verifyEmail);
+router.get('/verify/:verificationToken', ctrl.verifyEmail);
 
-router.post('/', validateBody(schemas.emailVerifySchema), ctrl.resendVerifyEmail);
+router.post('/verify', validateBody(schemas.emailVerifySchema), ctrl. resendVerifyEmail);
 
 module.exports = router;

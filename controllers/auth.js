@@ -62,7 +62,8 @@ const register = async(req, res) => {
 };
 
 const verifyEmail = async(req, res) => {
-  const {verificationToken} = req.body;
+  const {verificationToken} = req.params;
+
   const user = await User.findOne({verificationToken});
   if(!user){
     throw HttpError(404, 'Not found');
@@ -74,18 +75,17 @@ const verifyEmail = async(req, res) => {
     verificationToken: null,
   });
 
-  // //check updated (verified) user
-  // await User.findOne({verificationToken});
-  // console.log('user after verifyEmail:', user);
-
-
   res.json({
     message: 'Verification successful',
   })
 };
 
 const resendVerifyEmail = async (req, res) => {
+
+  console.log("it is router.get('/users/verify, ctrl.resendVerifyEmail)");
+
   const {email} = req.body;
+  
   if(!email){
     throw HttpError(400, 'missing required field email');
   }
@@ -100,7 +100,7 @@ const resendVerifyEmail = async (req, res) => {
   const verifyEmail = {
     to: email,
     subject: 'Verify email',
-    html: `<a target='_blank' href='${BASE_URL}/api/auth/verify/${user.verificationToken}'>Click to verify email</a>`
+    html: `<a target='_blank' href='${BASE_URL}/users/verify/${user.verificationToken}'>Click to verify email</a>`
   };
 
   await sendEmail(verifyEmail);
