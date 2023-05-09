@@ -23,6 +23,7 @@ const { HttpError, ctrlWrapper, resizeAvatar, sendEmail } = require('../helpers'
 
 const avatarsDir = path.join(__dirname, '../', 'public', 'avatars')
 
+
 const register = async(req, res) => {
   //check is email unique
   const {email, password} = req.body;
@@ -79,7 +80,6 @@ const verifyEmail = async(req, res) => {
     message: 'Verification successful',
   })
 };
-
 
 //////  --------------------------------------------
 const resendVerifyEmail = async (req, res) => {
