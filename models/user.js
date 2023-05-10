@@ -20,8 +20,8 @@ const userSchema = new Schema ({
   },
   subscription: {
     type: String,
-    enum: ["starter", "pro", "business"],
-    default: "starter"
+    enum: ['starter', 'pro', 'business'],
+    default: 'starter'
   },
   token: {
     type: String,
@@ -30,16 +30,29 @@ const userSchema = new Schema ({
   avatarURL: {
     type: String,
     required: true,
-  }
+  },
+  verify: {
+    type: Boolean,
+    default: false,
+  },
+  verificationToken: {
+    type: String,
+    default: '',
+    required: [true, 'Verify token is required'],
+  },
 }, {versionKey: false, timestamps: true});
 
 userSchema.post('save', handleMongooseError);
 
 const registerSchema = Joi.object({
-  subscription: Joi.string().valid("starter", "pro", "business"),
+  subscription: Joi.string().valid('starter', 'pro', 'business'),
   email: Joi.string().pattern(emailRegexp).required(), 
   password: Joi.string().min(6).required(),
 });
+
+const emailVerifySchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required(), 
+})
 
 const loginSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(), 
@@ -47,22 +60,18 @@ const loginSchema = Joi.object({
 });
 
 const updateSubscriptionSchema = Joi.object({
-  subscription: Joi.string().valid("starter", "pro", "business").required()
+  subscription: Joi.string().valid('starter', 'pro', 'business').required()
     .messages({
-      "any.only":
-        "The subscription must have one of the following values: 'starter', 'pro' or 'business'",
+      'any.only':
+        `The subscription must have one of the following values: 'starter', 'pro' or 'business'`,
     }),
 });
-
-const updateAvatarSchema = Joi.object({
-
-})
 
 const schemas = {
   registerSchema,
   loginSchema,
   updateSubscriptionSchema,
-  updateAvatarSchema,
+  emailVerifySchema,
 };
 
 const User = model('user', userSchema);

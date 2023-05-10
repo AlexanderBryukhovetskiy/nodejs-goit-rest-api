@@ -13,7 +13,7 @@ const router = express.Router();
 router.post('/register', validateBody(schemas.registerSchema), ctrl.register);
 
 //signin
-router.post('/login', validateBody(schemas.loginSchema), ctrl.login);
+router.post('/login', validateBody(schemas.loginSchema), ctrl.login) ;
 
 //current
 router.get('/current', authenticate, ctrl.getCurrent);
